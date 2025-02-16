@@ -14,11 +14,13 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid())
+  id             String         @id @default(uuid())
   username       String
   profilePicture String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  models         Model[]
+  outputImages   OutPutImages[]
 }
 
 model Model {
@@ -29,6 +31,8 @@ model Model {
   ethinicity     EthinicityEnum
   eyeColor       EyeColorEnum
   bald           Boolean
+  userId         String
+  user           User             @relation(fields: [userId], references: [id])
   trainingImages TrainingImages[]
   outputImages   OutPutImages[]
   createdAt      DateTime         @default(now())
@@ -37,17 +41,23 @@ model Model {
 
 model TrainingImages {
   id       String @id @default(uuid())
-  imageUrl String
+  imageUrl String @default("")
   modelId  String
   userId   String
   model    Model  @relation(fields: [modelId], references: [id])
 }
 
 model OutPutImages {
-  id       String @id @default(uuid())
-  imageUrl String
-  modelId  String
-  model    Model  @relation(fields: [modelId], references: [id])
+  id        String     @id @default(uuid())
+  imageUrl  String
+  modelId   String
+  userId    String
+  prompt    String
+  status    StatusEnum @default(Pending)
+  user      User       @relation(fields: [userId], references: [id])
+  model     Model      @relation(fields: [modelId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Packs {
@@ -63,6 +73,12 @@ model PackPrompt {
   pack   Packs  @relation(fields: [packId], references: [id])
 }
 
+enum StatusEnum {
+  Pending
+  Completed
+  Failed
+}
+
 enum ModelTypeEnum {
   Men
   Women
@@ -74,7 +90,7 @@ enum EthinicityEnum {
   Black
   AsianAmerican
   EastAsian
-  SouthEastAsia
+  SouthEastAsian
   SouthAsian
   MiddleEastern
   Pacific

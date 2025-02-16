@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/types.ts"],"version":"5.7.3"}
+{"root":["./src/index.ts","./src/types.ts","./src/routes/aigenerate.ts","./src/routes/pack.ts","./src/routes/training.ts"],"version":"5.7.3"}
