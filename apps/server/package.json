@@ -12,10 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@repo/db": "workspace:*"
+    "@repo/db": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@fal-ai/client": "^1.2.3",
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

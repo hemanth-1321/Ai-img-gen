@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { GenerateImage } from "../types";
 import { client } from "@repo/db/client";
-
+import { falAiModel } from "../utils/FalAi";
 const router: Router = Router();
 
 router.post("/generate", async (req, res) => {
@@ -12,12 +12,30 @@ router.post("/generate", async (req, res) => {
     return;
   }
 
+  const model = await client.model.findUnique({
+    where: {
+      id: parsedBody.data.modelId,
+    },
+  });
+  if (!model || !model.tensorPath) {
+    res.status(411).json({
+      message: "model not found",
+    });
+    return;
+  }
+
+  const { request_id, response_url } = await falAiModel.genrateImage(
+    parsedBody.data.prompt,
+    model?.tensorPath
+  );
+
   const data = await client.outPutImages.create({
     data: {
       prompt: parsedBody.data.prompt,
       userId: "hemanth",
       modelId: parsedBody.data.modelId,
       imageUrl: "",
+      falAiRequestId: request_id,
     },
   });
 

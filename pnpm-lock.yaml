@@ -20,6 +20,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@fal-ai/client':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -213,6 +216,10 @@ packages:
     resolution: {integrity: sha512-lB05FkqEdUg2AA0xEbUz0SnkXT1LcCTa438W4IWTUh4hdOnVbQyOJ81OrDXsJk/LSiJHubgGEFoR5EHq1NsH1A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@fal-ai/client@1.2.3':
+    resolution: {integrity: sha512-Lf37bJN16ssbaHYPSWDVCRspdTubcZvugyemEEtm6frhi83f9J+FJuq9uiY9WfR5bskQ8CZhBYhD9irZOPxY5Q==}
+    engines: {node: '>=18.0.0'}
+
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
     engines: {node: '>=18.18.0'}
@@ -347,6 +354,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@msgpack/msgpack@3.0.1':
+    resolution: {integrity: sha512-9qysoVTITLcOFIIJeXbdtUgvvY25ojUp+WWfLc0O4H4KKWeamUNAqkjS5mej/PnVDnH70llWKNa7pzv5U4TqVQ==}
+    engines: {node: '>= 18'}
 
   '@next/env@15.1.6':
     resolution: {integrity: sha512-d9AFQVPEYNr+aqokIiPLNK/MTyt3DWa/dpKveiAaVccUadFbhFEvY6FXYX2LJO2Hv7PHnLBu2oWwB4uBuHjr/w==}
@@ -1073,6 +1084,10 @@ packages:
   etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+
+  eventsource-parser@1.1.2:
+    resolution: {integrity: sha512-v0eOBUbiaFojBu2s2NPBfYUoRR9GjcDNvCXVaqEf5vVfpIAh9f8RCo4vXTP8c63QRKCFwoLpMpTdPwwhEKVgzA==}
+    engines: {node: '>=14.18'}
 
   execa@5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
@@ -1920,6 +1935,9 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
+  robot3@0.4.1:
+    resolution: {integrity: sha512-hzjy826lrxzx8eRgv80idkf8ua1JAepRc9Efdtj03N3KNJuznQCPlyCJ7gnUmDFwZCLQjxy567mQVKmdv2BsXQ==}
+
   run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
     engines: {node: '>=0.12.0'}
@@ -2427,6 +2445,12 @@ snapshots:
       '@eslint/core': 0.10.0
       levn: 0.4.1
 
+  '@fal-ai/client@1.2.3':
+    dependencies:
+      '@msgpack/msgpack': 3.0.1
+      eventsource-parser: 1.1.2
+      robot3: 0.4.1
+
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.6':
@@ -2523,6 +2547,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@msgpack/msgpack@3.0.1': {}
 
   '@next/env@15.1.6': {}
 
@@ -3421,6 +3447,8 @@ snapshots:
   esutils@2.0.3: {}
 
   etag@1.8.1: {}
+
+  eventsource-parser@1.1.2: {}
 
   execa@5.1.1:
     dependencies:
@@ -4396,6 +4424,8 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
+
+  robot3@0.4.1: {}
 
   run-async@2.4.1: {}
 
