@@ -2,7 +2,35 @@ import { Router } from "express";
 import { GenerateImage } from "../types";
 import { client } from "@repo/db/client";
 import { falAiModel } from "../utils/FalAi";
+import { getPresignedGetUrl, getPresignedUrl } from "../utils/S3";
+
 const router: Router = Router();
+
+router.post("/presigned-url", async (req, res) => {
+  console.log(req.body);
+  const { fileName, fileType } = req.body;
+  console.log(fileName, fileType);
+  if (!fileName || !fileType) {
+    res.status(400).json({
+      message: "Missing FileName or FileType",
+    });
+    return;
+  }
+  try {
+    const { uploadURL, filePath } = await getPresignedUrl(
+      fileName as string,
+      fileType as string,
+      "locations"
+    );
+    console.log(uploadURL, filePath);
+    res.status(200).json({ uploadURL, filePath });
+  } catch (error) {
+    console.error("error uploading image", error);
+    res.status(500).json({
+      message: "Error uploading Image",
+    });
+  }
+});
 
 router.post("/generate", async (req, res) => {
   const parsedBody = GenerateImage.safeParse(req.body);

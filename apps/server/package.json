@@ -16,6 +16,8 @@
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0",
+    "@aws-sdk/s3-request-presigner": "^3.750.0",
     "@fal-ai/client": "^1.2.3",
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",

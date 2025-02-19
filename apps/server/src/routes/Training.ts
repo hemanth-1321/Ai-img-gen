@@ -13,7 +13,7 @@ router.post("/ai/training", async (req, res) => {
   }
 
   const { request_id, response_url } = await falAiModel.TrainModel(
-    "",
+    parsedBody.data.zipUrl,
     parsedBody.data.name
   );
 
@@ -28,6 +28,7 @@ router.post("/ai/training", async (req, res) => {
       bald: parsedBody.data.bald,
       userId: User_Id,
       falAiRequestId: request_id,
+      zipUrl: parsedBody.data.zipUrl,
     },
   });
   res.status(200).json({
