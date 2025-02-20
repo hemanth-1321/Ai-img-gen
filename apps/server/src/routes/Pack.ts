@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { GenerateImageFromPack } from "../types";
 import { client } from "@repo/db/client";
+import { falAiModel } from "../utils/FalAi";
 
 const router: Router = Router();
 
@@ -17,12 +18,18 @@ router.post("/pack/generate", async (req, res) => {
     },
   });
 
+  let requestIds: { request_id: string }[] = await Promise.all(
+    prompts.map((prompt) =>
+      falAiModel.genrateImage(prompt.prompt, parsedBody.data.modelId)
+    )
+  );
   const images = await client.outPutImages.createManyAndReturn({
-    data: prompts.map((prompt) => ({
+    data: prompts.map((prompt, index) => ({
       prompt: prompt.prompt,
       userId: "hemanth",
       modelId: parsedBody.data.modelId,
       imageUrl: "",
+      falAiRequestId: requestIds[index]?.request_id,
     })),
   });
 
