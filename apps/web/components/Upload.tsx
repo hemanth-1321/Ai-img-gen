@@ -22,14 +22,22 @@ export const Upload = ({
   }, [filePath]);
 
   const getPreSignedUrl = async (filename: string) => {
-    console.log(filename);
+    console.log("Generating pre-signed URL for:", filename);
     try {
       const response = await axios.post(`${BACKEND_URL}/ai/gen/presigned-url`, {
         fileName: filename,
         fileType: "application/zip",
       });
-      setFilePath(response.data.filePath);
-      return response.data.uploadURL;
+
+      const uploadURL = response.data.uploadURL;
+      const generatedFilePath = response.data.filePath;
+
+      console.log("Pre-signed URL:", uploadURL);
+      console.log("Generated file path:", generatedFilePath);
+
+      setFilePath(generatedFilePath);
+
+      return { uploadURL, generatedFilePath };
     } catch (error) {
       console.error("Error fetching pre-signed URL:", error);
       return null;
@@ -48,14 +56,14 @@ export const Upload = ({
         console.log("Upload successful!");
 
         if (!filePath) {
-          console.error("File path is missing. Retrying...");
+          console.log("File path is missing. Retrying...");
           return;
         }
 
         const finalPath = `${AWS_S3_URL}/${filePath}`;
         console.log("Final S3 URL:", finalPath);
 
-        onUploadDone(finalPath); // Call onUploadDone only when filePath is set
+        onUploadDone(finalPath);
       } else {
         console.error("Upload failed:", response);
       }
@@ -90,14 +98,23 @@ export const Upload = ({
       console.error("No ZIP file to upload!");
       return;
     }
-    console.log(zipBlob);
-    const zipFilename = `files_${Date.now()}.zip`;
-    const presignedUrl = await getPreSignedUrl(zipFilename);
 
-    if (presignedUrl) {
-      await uploadToPresignedUrl(presignedUrl, zipBlob);
+    console.log("Creating ZIP file...");
+    const zipFilename = `files_${Date.now()}.zip`;
+    const result = await getPreSignedUrl(zipFilename);
+
+    if (result && result.uploadURL && result.generatedFilePath) {
+      console.log("Uploading ZIP to:", result.uploadURL);
+      await uploadToPresignedUrl(result.uploadURL, zipBlob);
+
+      const finalPath = `${AWS_S3_URL}/${result.generatedFilePath}`;
+      console.log("Final S3 URL:", finalPath);
+      onUploadDone(finalPath);
+    } else {
+      console.error("Failed to get pre-signed URL.");
     }
   };
+
   return (
     <div>
       {/* Image Upload Section */}

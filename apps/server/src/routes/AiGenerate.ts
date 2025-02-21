@@ -34,7 +34,6 @@ router.post("/presigned-url", async (req, res) => {
 
 router.post("/generate", async (req, res) => {
   const parsedBody = GenerateImage.safeParse(req.body);
-
   if (!parsedBody.success) {
     res.status(400).json({ error: parsedBody.error.message });
     return;

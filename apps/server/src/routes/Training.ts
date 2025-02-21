@@ -4,9 +4,9 @@ import { client } from "@repo/db/client";
 import { falAiModel } from "../utils/FalAi";
 const router: Router = express.Router();
 
-router.post("/ai/training", async (req, res) => {
+router.post("/training", async (req, res) => {
   const parsedBody = TrainModel.safeParse(req.body);
-
+  console.log(req.body);
   if (!parsedBody.success) {
     res.status(400).json({ error: parsedBody.error.message });
     return;
