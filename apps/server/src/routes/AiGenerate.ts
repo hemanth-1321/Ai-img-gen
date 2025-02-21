@@ -20,7 +20,7 @@ router.post("/presigned-url", async (req, res) => {
     const { uploadURL, filePath } = await getPresignedUrl(
       fileName as string,
       fileType as string,
-      "locations"
+      "ziped"
     );
     console.log(uploadURL, filePath);
     res.status(200).json({ uploadURL, filePath });

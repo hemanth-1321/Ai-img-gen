@@ -1,11 +1,13 @@
-import express from "express";
-import AiGenerate from "./routes/AiGenerate";
-import FalWebHook from "./routes/FalWebHook";
 import dotenv from "dotenv";
 
 dotenv.config();
+import express from "express";
+import AiGenerate from "./routes/AiGenerate";
+import FalWebHook from "./routes/FalWebHook";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {

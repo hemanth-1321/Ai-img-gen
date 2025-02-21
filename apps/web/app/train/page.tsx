@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BACKEND_URL } from "@/lib/config";
 import {
   Select,
   SelectContent,
@@ -21,30 +22,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-
+import { Upload } from "@/components/Upload";
 const Page = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [type, setType] = useState("");
   const [ethnicity, setEthnicity] = useState("");
   const [eyeColor, setEyeColor] = useState("");
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [isClient, setIsClient] = useState(false); // Fix hydration issue
-
+  const [isClient, setIsClient] = useState(false);
+  const [zipurl, setZipUrl] = useState("");
   useEffect(() => {
-    setIsClient(true); // Ensure component is mounted before rendering
+    setIsClient(true);
   }, []);
 
-  if (!isClient) return null; // Prevent SSR mismatches
-
-  // Handle File Selection
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const filesArray = Array.from(event.target.files);
-      console.log(filesArray);
-      setSelectedFiles(filesArray);
-    }
-  };
+  if (!isClient) return null;
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
@@ -141,41 +132,18 @@ const Page = () => {
                 <Label>Bald</Label>
                 <Switch />
               </div>
+
+              <div>
+                <Upload
+                  onUploadDone={(zipurl) => {
+                    setZipUrl(zipurl);
+                    console.log("inthe page", zipurl);
+                  }}
+                />
+              </div>
             </div>
           </form>
         </CardContent>
-
-        {/* Image Upload Section */}
-        <CardFooter className="flex flex-col space-y-2">
-          <Label className="text-lg font-semibold">Upload Images</Label>
-
-          {/* File Input */}
-          <Input
-            type="file"
-            multiple
-            className="w-full py-2 border border-gray-300 rounded-lg"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-
-          {/* Preview Selected Images */}
-          {selectedFiles.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-2">
-              {selectedFiles.map((file, index) => (
-                <div key={index} className="relative w-24 h-24 border p-1">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`preview ${index}`}
-                    className="object-cover w-full h-full rounded-md"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Upload Button */}
-          <Button className="w-full mt-4">Upload</Button>
-        </CardFooter>
       </Card>
     </div>
   );
