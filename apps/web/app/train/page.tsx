@@ -26,17 +26,20 @@ import { TrainModel } from "@/types";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 const Page = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
+
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [type, setType] = useState("Man");
-  const [ethnicity, setEthnicity] = useState("");
-  const [eyeColor, setEyeColor] = useState("");
+  const [ethnicity, setEthnicity] = useState("White");
+  const [eyeColor, setEyeColor] = useState("Gray");
   const [bald, setBald] = useState<boolean>(false);
   const [isClient, setIsClient] = useState(false);
-  const [zipurl, setZipUrl] = useState("");
+  const [zipUrl, setZipUrl] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -45,8 +48,10 @@ const Page = () => {
   if (!isClient) return null;
 
   const trainModel = async () => {
+    const token = await getToken();
+    console.log("token", token);
     const input = {
-      zipurl,
+      zipUrl,
       type,
       age: Number(age),
       ethnicity,
@@ -57,21 +62,24 @@ const Page = () => {
     console.log(input);
     const response = await axios.post(
       `${BACKEND_URL}/ai/train/training`,
-      input
+      input,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    if (response.data.status == 200) {
+    if (response.status == 200) {
       router.push("/");
     }
   };
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
-      <Card className="w-[350px]">
+      <Card className="w-[350px] shadow-2xl">
         <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle>Create Model</CardTitle>
+          <CardDescription>Train Your Model</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid w-full items-center gap-4">
@@ -122,13 +130,13 @@ const Page = () => {
                 <SelectContent>
                   <SelectItem value="White">White</SelectItem>
                   <SelectItem value="Black">Black</SelectItem>
-                  <SelectItem value="Asian American">Asian American</SelectItem>
-                  <SelectItem value="East Asian">East Asian</SelectItem>
-                  <SelectItem value="South East Asian">
+                  <SelectItem value="AsianAmerican">Asian American</SelectItem>
+                  <SelectItem value="EastAsian">East Asian</SelectItem>
+                  <SelectItem value="SouthEastAsian">
                     South East Asian
                   </SelectItem>
-                  <SelectItem value="South Asian">South Asian</SelectItem>
-                  <SelectItem value="Middle Eastern">Middle Eastern</SelectItem>
+                  <SelectItem value="SouthAsian">South Asian</SelectItem>
+                  <SelectItem value="MiddleEastern">Middle Eastern</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id             String         @id @default(uuid())
-  username       String
+  email          String         @unique
   profilePicture String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
@@ -28,7 +28,7 @@ model Model {
   name           String
   type           ModelTypeEnum
   age            Int
-  ethinicity     EthinicityEnum
+  ethnicity      EthinicityEnum?
   eyeColor       EyeColorEnum
   bald           Boolean
   userId         String

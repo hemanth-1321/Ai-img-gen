@@ -5,6 +5,7 @@ import express from "express";
 import AiGenerate from "./routes/AiGenerate";
 import FalWebHook from "./routes/FalWebHook";
 import AiTraining from "./routes/Training";
+import AuthRouter from "./routes/User";
 import cors from "cors";
 
 const app = express();
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/auth", AuthRouter);
 app.use("/ai/gen", AiGenerate);
 app.use("/ai/train", AiTraining);
 app.use("/fal-ai/webhook", FalWebHook);

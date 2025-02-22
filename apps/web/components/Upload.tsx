@@ -120,7 +120,7 @@ export const Upload = ({
       {/* Image Upload Section */}
       <CardFooter className="flex flex-col space-y-2">
         <CloudUpload />
-        <Label className="text-lg font-semibold">Upload Images</Label>
+        <Label className="text-lg font-semibold">Select Multiple Images</Label>
 
         {/* File Input */}
         <Input
