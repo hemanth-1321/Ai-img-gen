@@ -2,10 +2,18 @@ import { Router } from "express";
 import { GenerateImageFromPack } from "../types";
 import { client } from "@repo/db/client";
 import { falAiModel } from "../utils/FalAi";
+import { authMiddleware } from "../middleware";
 
 const router: Router = Router();
 
-router.post("/pack/generate", async (req, res) => {
+router.post("/pack/generate", authMiddleware, async (req, res) => {
+  const userId = req.userId;
+  if (!userId) {
+    res.status(404).json({
+      message: "unAuthorized",
+    });
+    return;
+  }
   const parsedBody = GenerateImageFromPack.safeParse(req.body);
   if (!parsedBody.success) {
     res.status(400).json({ error: parsedBody.error.message });
@@ -26,7 +34,7 @@ router.post("/pack/generate", async (req, res) => {
   const images = await client.outPutImages.createManyAndReturn({
     data: prompts.map((prompt, index) => ({
       prompt: prompt.prompt,
-      userId: "hemanth",
+      userId: userId,
       modelId: parsedBody.data.modelId,
       imageUrl: "",
       falAiRequestId: requestIds[index]?.request_id,

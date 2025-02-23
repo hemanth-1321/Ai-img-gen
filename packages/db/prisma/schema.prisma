@@ -19,12 +19,11 @@ model User {
   profilePicture String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  models         Model[]
   outputImages   OutPutImages[]
 }
 
 model Model {
-  id             String           @id @default(uuid())
+  id             String          @id @default(uuid())
   name           String
   type           ModelTypeEnum
   age            Int
@@ -34,8 +33,8 @@ model Model {
   userId         String
   triggeredWord  String?
   tensorPath     String?
-  trainingStatus StatusEnum       @default(Pending)
-  user           User             @relation(fields: [userId], references: [id])
+  trainingStatus StatusEnum      @default(Pending)
+
   trainingImages TrainingImages[]
   outputImages   OutPutImages[]
   createdAt      DateTime         @default(now())
@@ -71,9 +70,12 @@ model OutPutImages {
 }
 
 model Packs {
-  id         String       @id @default(uuid())
-  name       String
-  PackPrompt PackPrompt[]
+  id          String       @id @default(uuid())
+  name        String
+  description String       @default("")
+  imageUrl1   String       @default("")
+  imageUrl2   String       @default("")
+  PackPrompt  PackPrompt[]
 }
 
 model PackPrompt {

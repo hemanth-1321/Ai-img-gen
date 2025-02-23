@@ -1,5 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/Hero";
 
 export default function Home() {
-  return <h1 className="text-3xl font-bold underline"></h1>;
+  return (
+    <div>
+      <Hero />
+    </div>
+  );
 }

@@ -3,6 +3,7 @@ import { GenerateImage } from "../types";
 import { client } from "@repo/db/client";
 import { falAiModel } from "../utils/FalAi";
 import { getPresignedGetUrl, getPresignedUrl } from "../utils/S3";
+import { authMiddleware } from "../middleware";
 
 const router: Router = Router();
 
@@ -32,7 +33,14 @@ router.post("/presigned-url", async (req, res) => {
   }
 });
 
-router.post("/generate", async (req, res) => {
+router.post("/generate", authMiddleware, async (req, res) => {
+  const userId = req.userId;
+  if (!userId) {
+    res.status(400).json({
+      message: "UnAuthorized",
+    });
+    return;
+  }
   const parsedBody = GenerateImage.safeParse(req.body);
   if (!parsedBody.success) {
     res.status(400).json({ error: parsedBody.error.message });
@@ -59,7 +67,7 @@ router.post("/generate", async (req, res) => {
   const data = await client.outPutImages.create({
     data: {
       prompt: parsedBody.data.prompt,
-      userId: "hemanth",
+      userId: userId,
       modelId: parsedBody.data.modelId,
       imageUrl: "",
       falAiRequestId: request_id,
@@ -71,24 +79,33 @@ router.post("/generate", async (req, res) => {
     imageId: data.id,
   });
 });
+router.get("/image/bulk", authMiddleware, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 100;
+    const offset = parseInt(req.query.offset as string) || 0;
 
-router.get("/image/bulk", async (req, res) => {
-  const images = req.query.images as string[];
-  const limit = (req.query.limit as string) ?? 10;
-  const offset = (req.query.limit as string) ?? 0;
-  const imageData = await client.outPutImages.findMany({
-    where: {
-      id: {
-        in: images,
+    console.log("Authenticated user ID:", req.userId);
+
+    // Fetch images that belong to the authenticated user
+    const imagesData = await client.outPutImages.findMany({
+      where: {
+        OR: [
+          { userId: req.userId }, // Fetch user's own images
+          { model: { userId: req.userId } }, // Fetch images linked to user's models
+        ],
       },
-      userId: "hemanth",
-    },
-    skip: parseInt(offset),
-    take: parseInt(limit),
-  });
+      orderBy: { createdAt: "desc" },
+      skip: offset,
+      take: limit,
+    });
 
-  res.status(200).json({
-    images: imageData,
-  });
+    console.log("Fetched Images Data:", imagesData);
+
+    res.json({ images: imagesData });
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
 export default router;
