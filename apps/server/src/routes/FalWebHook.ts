@@ -1,5 +1,7 @@
 import { client } from "@repo/db/client";
 import express, { Router } from "express";
+import { FalAiModel } from "../models/FalAiModel";
+import { falAiModel } from "../utils/FalAi";
 
 const router: Router = express();
 
@@ -24,6 +26,7 @@ router.post("/image", async (req, res) => {
 
 router.post("/train", async (req, res) => {
   console.log(req.body);
+  const { imageUrl } = await falAiModel.generateImageSync(req.body.tensorPath);
 
   const request_id = req.body.request_id;
 
@@ -34,6 +37,7 @@ router.post("/train", async (req, res) => {
     data: {
       trainingStatus: "Generated",
       tensorPath: req.body.tensorPath,
+      thumbnail: imageUrl,
     },
   });
 

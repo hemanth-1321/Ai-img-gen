@@ -14,16 +14,15 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  email          String         @unique
+  id             String   @id @default(uuid())
+  email          String   @unique
   profilePicture String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  outputImages   OutPutImages[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Model {
-  id             String          @id @default(uuid())
+  id             String           @id @default(uuid())
   name           String
   type           ModelTypeEnum
   age            Int
@@ -33,13 +32,14 @@ model Model {
   userId         String
   triggeredWord  String?
   tensorPath     String?
-  trainingStatus StatusEnum      @default(Pending)
-
+  trainingStatus StatusEnum       @default(Pending)
+  thumbnail      String?
   trainingImages TrainingImages[]
   outputImages   OutPutImages[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   falAiRequestId String?
+  open           Boolean          @default(false)
   zipUrl         String?
 
   @@index([falAiRequestId])
@@ -60,7 +60,6 @@ model OutPutImages {
   userId         String
   prompt         String
   status         StatusEnum @default(Pending)
-  user           User       @relation(fields: [userId], references: [id])
   model          Model      @relation(fields: [modelId], references: [id])
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt

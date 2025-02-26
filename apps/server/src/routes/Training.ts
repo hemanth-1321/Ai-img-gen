@@ -56,4 +56,16 @@ router.post("/training", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/models", authMiddleware, async (req, res) => {
+  const models = await client.model.findMany({
+    where: {
+      OR: [{ userId: req.userId }, { open: true }],
+    },
+  });
+
+  res.json({
+    models,
+  });
+});
+
 export default router;

@@ -13,10 +13,11 @@ const page = () => {
           <Tabs defaultValue="account" className="w-[400px]">
             <div className="flex justify-center">
               <TabsList className="gap-4">
+                <TabsTrigger value="camera">Camera</TabsTrigger>
+
                 <TabsTrigger value="generate">Gerate Image</TabsTrigger>
                 <TabsTrigger value="train">Train a model</TabsTrigger>
-                <TabsTrigger value="packs">Packs</TabsTrigger>
-                <TabsTrigger value="camera">Camera</TabsTrigger>
+                {/* <TabsTrigger value="packs">Packs</TabsTrigger> */}
               </TabsList>
             </div>
             <TabsContent value="generate">
@@ -25,9 +26,9 @@ const page = () => {
             <TabsContent value="train">
               <Train />
             </TabsContent>
-            <TabsContent value="packs">
+            {/* <TabsContent value="packs">
               <Packs />
-            </TabsContent>{" "}
+            </TabsContent>{" "} */}
             <TabsContent value="camera">
               <Camera />
             </TabsContent>

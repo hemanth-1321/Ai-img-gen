@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AppBar } from "@/components/AppBar";
 import { ThemeProvider } from "components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,7 +36,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AppBar />
-            {children}{" "}
+            {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </ClerkProvider>

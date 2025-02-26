@@ -35,6 +35,7 @@ router.post("/presigned-url", async (req, res) => {
 
 router.post("/generate", authMiddleware, async (req, res) => {
   const userId = req.userId;
+  console.log(req.body);
   if (!userId) {
     res.status(400).json({
       message: "UnAuthorized",
@@ -69,8 +70,9 @@ router.post("/generate", authMiddleware, async (req, res) => {
       prompt: parsedBody.data.prompt,
       userId: userId,
       modelId: parsedBody.data.modelId,
-      imageUrl: "",
+      imageUrl: response_url,
       falAiRequestId: request_id,
+      status: "Generated",
     },
   });
 
@@ -79,6 +81,7 @@ router.post("/generate", authMiddleware, async (req, res) => {
     imageId: data.id,
   });
 });
+
 router.get("/image/bulk", authMiddleware, async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 100;

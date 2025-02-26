@@ -33,7 +33,7 @@ export const Camera = () => {
   }, [getToken]);
 
   return (
-    <div>
+    <div className="grid grid-cols-1 md:grid-cols-4">
       {images.length > 0 ? (
         images.map((image) => <ImageCard key={image.id} {...image} />)
       ) : (
