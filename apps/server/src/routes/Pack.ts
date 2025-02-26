@@ -32,7 +32,7 @@ router.post("/pack/generate", authMiddleware, async (req, res) => {
     )
   );
   const images = await client.outPutImages.createManyAndReturn({
-    data: prompts.map((prompt, index) => ({
+    data: prompts.map((prompt: any, index: any) => ({
       prompt: prompt.prompt,
       userId: userId,
       modelId: parsedBody.data.modelId,
@@ -43,7 +43,7 @@ router.post("/pack/generate", authMiddleware, async (req, res) => {
 
   res.status(200).json({
     message: "Images generated successfully",
-    images: images.map((image) => image.id),
+    images: images.map((image: any) => image.id),
   });
 });
 
