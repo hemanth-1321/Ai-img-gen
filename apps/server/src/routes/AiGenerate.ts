@@ -70,7 +70,7 @@ router.post("/generate", authMiddleware, async (req, res) => {
       prompt: parsedBody.data.prompt,
       userId: userId,
       modelId: parsedBody.data.modelId,
-      imageUrl: response_url,
+      imageUrl: "",
       falAiRequestId: request_id,
       status: "Generated",
     },

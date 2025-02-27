@@ -15,7 +15,10 @@ export class FalAiModel {
         webhookUrl: `${process.env.BASE_URL}/fal-ai/webhook/image`,
       }
     );
-    return { request_id: "", response_url: "" };
+    console.log(
+      `here in genearet", ${process.env.BASE_URL}/fal-ai/webhook/image`
+    );
+    return { request_id, response_url };
   }
 
   public async TrainModel(zipUrl: string, triggeredWord: string) {

@@ -6,7 +6,7 @@ import { falAiModel } from "../utils/FalAi";
 const router: Router = express();
 
 router.post("/image", async (req, res) => {
-  console.log(req.body);
+  console.log("here in hooks", req.body);
 
   const request_id = req.body.request_id;
 
@@ -16,7 +16,7 @@ router.post("/image", async (req, res) => {
     },
     data: {
       status: "Generated",
-      imageUrl: req.body.imageUrl,
+      imageUrl: req.body.payload.images[0].url,
     },
   });
   res.status(201).json({
