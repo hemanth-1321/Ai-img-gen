@@ -26,6 +26,7 @@ export class FalAiModel {
   }
 
   public async TrainModel(zipUrl: string, triggeredWord: string) {
+    console.log("ZipUrl", zipUrl, triggeredWord);
     const { request_id, response_url } = await fal.queue.submit(
       "fal-ai/flux-lora-fast-training",
       {

@@ -33,7 +33,6 @@ router.post("/training", authMiddleware, async (req, res) => {
         name: parsedBody.data.name,
         type: parsedBody.data.type,
         age: parsedBody.data.age,
-        tensorPath: parsedBody.data.tensorPath,
         ethnicity: parsedBody.data.ethnicity,
         eyeColor: parsedBody.data.eyeColor,
         bald: parsedBody.data.bald,
