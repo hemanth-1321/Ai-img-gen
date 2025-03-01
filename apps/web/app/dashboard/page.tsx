@@ -7,7 +7,7 @@ import { Camera } from "@/components/Camera";
 
 const page = () => {
   return (
-    <div className="flex justify-center mt-6">
+    <div className="flex justify-center mt-24">
       <div className="w-2xl">
         <div className="flex justify-center">
           <Tabs defaultValue="account" className="w-[400px]">
