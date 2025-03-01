@@ -7,9 +7,11 @@ const router: Router = express();
 
 router.post("/image", async (req, res) => {
   console.log("here in hooks", req.body);
+  console.log("images", req.body.payload.images);
 
   const request_id = req.body.request_id;
-  const images = req.body.payload.image[0].url;
+  const images = req.body.payload.images[0].url;
+  console.log("images of 0", images);
   if (!images) {
     res.status(404).json({
       messgae: "images not found",
