@@ -26,17 +26,17 @@ export class FalAiModel {
   }
 
   public async TrainModel(zipUrl: string, triggeredWord: string) {
-    // const { request_id, response_url } = await fal.queue.submit(
-    //   "fal-ai/flux-lora-fast-training",
-    //   {
-    //     input: {
-    //       images_data_url: zipUrl,
-    //       trigger_word: triggeredWord,
-    //     },
-    //     webhookUrl: `${process.env.WEBHOOK_BASE_URL}/fal-ai/webhook/train`,
-    //   }
-    // );
-    return { request_id: "", response_url: "" };
+    const { request_id, response_url } = await fal.queue.submit(
+      "fal-ai/flux-lora-fast-training",
+      {
+        input: {
+          images_data_url: zipUrl,
+          trigger_word: triggeredWord,
+        },
+        webhookUrl: `${process.env.WEBHOOK_BASE_URL}/fal-ai/webhook/train`,
+      }
+    );
+    return { request_id, response_url };
   }
 
   public async generateImageSync(tensorPath: string) {

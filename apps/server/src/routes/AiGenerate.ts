@@ -88,13 +88,23 @@ router.get("/image/bulk", authMiddleware, async (req, res) => {
     const offset = parseInt(req.query.offset as string) || 0;
 
     console.log("Authenticated user ID:", req.userId);
+    if (req.body.status === "ERROR") {
+      res.status(411).json({
+        message: "",
+      });
+      return;
+    }
 
-    // Fetch images that belong to the authenticated user
     const imagesData = await client.outPutImages.findMany({
       where: {
         OR: [
-          { userId: req.userId }, // Fetch user's own images
-          { model: { userId: req.userId } }, // Fetch images linked to user's models
+          { userId: req.userId },
+          { model: { userId: req.userId } },
+          {
+            status: {
+              not: "Failed",
+            },
+          },
         ],
       },
       orderBy: { createdAt: "desc" },
