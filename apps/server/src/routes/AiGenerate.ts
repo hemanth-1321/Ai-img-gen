@@ -60,7 +60,7 @@ router.post("/generate", authMiddleware, async (req, res) => {
     return;
   }
 
-  const { request_id, response_url } = await falAiModel.genrateImage(
+  const { request_id, response_url } = await falAiModel.generateImage(
     parsedBody.data.prompt,
     model?.tensorPath
   );

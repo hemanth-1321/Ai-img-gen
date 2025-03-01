@@ -9,14 +9,19 @@ router.post("/image", async (req, res) => {
   console.log("here in hooks", req.body);
 
   const request_id = req.body.request_id;
-
+  const images = req.body.payload.image[0].url;
+  if (!images) {
+    res.status(404).json({
+      messgae: "images not found",
+    });
+  }
   await client.outPutImages.updateMany({
     where: {
       falAiRequestId: request_id,
     },
     data: {
       status: "Generated",
-      imageUrl: req.body.payload.images[0].url,
+      imageUrl: images,
     },
   });
   res.status(201).json({

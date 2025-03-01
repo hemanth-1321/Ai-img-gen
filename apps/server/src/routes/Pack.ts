@@ -28,7 +28,7 @@ router.post("/pack/generate", authMiddleware, async (req, res) => {
 
   let requestIds: { request_id: string }[] = await Promise.all(
     prompts.map((prompt) =>
-      falAiModel.genrateImage(prompt.prompt, parsedBody.data.modelId)
+      falAiModel.generateImage(prompt.prompt, parsedBody.data.modelId)
     )
   );
   const images = await client.outPutImages.createManyAndReturn({

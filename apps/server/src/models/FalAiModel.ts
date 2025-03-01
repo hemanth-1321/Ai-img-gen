@@ -3,22 +3,26 @@ import { BaseModel } from "./BaseModel";
 
 export class FalAiModel {
   constructor() {}
-
-  public async genrateImage(propmt: string, tensorPath: string) {
-    const { request_id, response_url } = await fal.queue.submit(
-      "fal-ai/flux-lora",
-      {
-        input: {
-          prompt: propmt,
-          loras: [{ path: tensorPath, scale: 1 }],
-        },
-        webhookUrl: `${process.env.BASE_URL}/fal-ai/webhook/image`,
-      }
-    );
-    console.log(
-      `here in genearet", ${process.env.BASE_URL}/fal-ai/webhook/image`
-    );
-    return { request_id, response_url };
+  public async generateImage(prompt: string, tensorPath: string) {
+    try {
+      const { request_id, response_url } = await fal.queue.submit(
+        "fal-ai/flux-lora",
+        {
+          input: {
+            prompt,
+            loras: [{ path: tensorPath, scale: 1 }],
+          },
+          webhookUrl: `${process.env.BASE_URL}/fal-ai/webhook/image`,
+        }
+      );
+      console.log(
+        `Generating image, webhook URL: ${process.env.BASE_URL}/fal-ai/webhook/image`
+      );
+      return { request_id, response_url };
+    } catch (error) {
+      console.error("Error generating image:", error);
+      throw error;
+    }
   }
 
   public async TrainModel(zipUrl: string, triggeredWord: string) {
