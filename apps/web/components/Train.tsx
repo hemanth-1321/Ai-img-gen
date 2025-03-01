@@ -27,6 +27,7 @@ import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export const Train = () => {
   const router = useRouter();
@@ -58,21 +59,25 @@ export const Train = () => {
       eyeColor,
       bald,
       name,
-      tensorPath:
-        "https://v3.fal.media/files/rabbit/chStuQ2gDsOq1-YCm8uoi_pytorch_lora_weights.safetensors",
     };
     console.log(input);
-    const response = await axios.post(
-      `${BACKEND_URL}/ai/train/training`,
-      input,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/ai/train/training`,
+        input,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status == 200) {
+        toast.success(
+          "Model training started! This will take approximately 20 minutes."
+        );
       }
-    );
-    if (response.status == 200) {
-      router.push("/");
+    } catch (error) {
+      toast.error("Failed to start model training");
     }
   };
 
