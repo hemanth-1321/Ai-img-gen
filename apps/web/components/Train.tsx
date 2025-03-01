@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Upload } from "@/components/Upload";
-import { TrainModel } from "@/types";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
 import { useRouter } from "next/navigation";
