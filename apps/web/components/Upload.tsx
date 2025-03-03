@@ -10,8 +10,10 @@ import { CloudUpload } from "lucide-react";
 import axios from "axios";
 
 export const Upload = ({
+  onUploadStart,
   onUploadDone,
 }: {
+  onUploadStart?: () => void;
   onUploadDone: (zipurl: string) => void;
 }) => {
   const [zipBlob, setZipBlob] = useState<Blob | null>(null);

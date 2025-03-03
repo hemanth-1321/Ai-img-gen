@@ -24,12 +24,10 @@ import { Switch } from "@/components/ui/switch";
 import { Upload } from "@/components/Upload";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 
 export const Train = () => {
-  const router = useRouter();
   const { getToken } = useAuth();
 
   const [name, setName] = useState("");
@@ -37,19 +35,12 @@ export const Train = () => {
   const [type, setType] = useState("Man");
   const [ethnicity, setEthnicity] = useState("White");
   const [eyeColor, setEyeColor] = useState("Gray");
-  const [bald, setBald] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState(false);
+  const [bald, setBald] = useState(false);
   const [zipUrl, setZipUrl] = useState("");
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) return null;
+  const [isUploading, setIsUploading] = useState(false);
 
   const trainModel = async () => {
     const token = await getToken();
-    console.log("token", token);
     const input = {
       zipUrl,
       type,
@@ -59,18 +50,15 @@ export const Train = () => {
       bald,
       name,
     };
-    console.log(input);
     try {
       const response = await axios.post(
         `${BACKEND_URL}/ai/train/training`,
         input,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (response.status == 200) {
+      if (response.status === 200) {
         toast.success(
           "Model training started! This will take approximately 20 minutes."
         );
@@ -81,40 +69,36 @@ export const Train = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-6">
-      <Card className="w-[650px] shadow-2xl">
+    <div className="flex flex-col items-center mt-6 px-4 md:px-0">
+      <Card className="w-full max-w-2xl shadow-2xl">
         <CardHeader>
-          <CardTitle>Create Model</CardTitle>
+          <CardTitle className="text-lg md:text-xl">Create Model</CardTitle>
           <CardDescription>Train Your Model</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid w-full items-center gap-4">
-            {/* Name Input */}
-            <div className="flex justify-between gap-2">
-              {" "}
-              <div className="flex flex-col space-y-1.5 flex-1">
+          <div className="grid gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  placeholder="Name of your project"
+                  placeholder="Project Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className="flex flex-col space-y-1.5 flex-1">
+              <div>
                 <Label htmlFor="age">Age</Label>
                 <Input
                   id="age"
-                  placeholder="Age of the Model"
+                  placeholder="Model Age"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                 />
               </div>
             </div>
-            {/* Type Select */}
-            <div className="flex justify-between gap-2">
-              {" "}
-              <div className="flex flex-col space-y-1.5 flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="type">Type</Label>
                 <Select value={type} onValueChange={setType}>
                   <SelectTrigger id="type">
@@ -127,8 +111,7 @@ export const Train = () => {
                   </SelectContent>
                 </Select>
               </div>
-              {/* Ethnicity Select */}
-              <div className="flex flex-col space-y-1.5 flex-1">
+              <div>
                 <Label htmlFor="ethnicity">Ethnicity</Label>
                 <Select value={ethnicity} onValueChange={setEthnicity}>
                   <SelectTrigger id="ethnicity">
@@ -152,10 +135,8 @@ export const Train = () => {
                 </Select>
               </div>
             </div>
-
-            <div className="flex justify-between  gap-4">
-              {/* Eye Color Select */}
-              <div className="flex flex-col space-y-1.5 flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="eyeColor">Eye Color</Label>
                 <Select value={eyeColor} onValueChange={setEyeColor}>
                   <SelectTrigger id="eyeColor">
@@ -169,26 +150,34 @@ export const Train = () => {
                   </SelectContent>
                 </Select>
               </div>
-
-              {/* Bald Switch */}
-              <div className="flex flex-col space-y-1.5 flex-1">
+              <div className="flex justify-start gap-4 md:mt-8">
                 <Label>Bald</Label>
                 <Switch checked={bald} onCheckedChange={setBald} />
               </div>
             </div>
 
-            <div>
-              <Upload
-                onUploadDone={(zipurl) => {
-                  setZipUrl(zipurl);
-                  console.log("in the page", zipurl);
-                }}
-              />
-            </div>
+            {/* Upload Component */}
+            <Upload
+              onUploadStart={() => {
+                setIsUploading(true);
+                toast.warning("Wait, your images are uploading...");
+              }}
+              onUploadDone={(zipurl) => {
+                setZipUrl(zipurl);
+                setIsUploading(false);
+                toast.success("Upload complete! You can now submit.");
+              }}
+            />
           </div>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button onClick={trainModel}>Submit</Button>
+          <Button
+            onClick={trainModel}
+            className="w-full md:w-auto"
+            disabled={isUploading || !zipUrl} // Disable if uploading or zipUrl is missing
+          >
+            Submit
+          </Button>
         </CardFooter>
       </Card>
     </div>

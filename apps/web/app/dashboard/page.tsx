@@ -8,28 +8,27 @@ import { Camera } from "@/components/Camera";
 const page = () => {
   return (
     <div className="flex justify-center mt-24">
-      <div className="w-2xl">
-        <div className="flex justify-center">
-          <Tabs defaultValue="account" className="w-[400px]">
+      <div className="w-full max-w-4xl">
+        <div className="flex justify-center w-full">
+          <Tabs defaultValue="account" className="w-full">
             <div className="flex justify-center">
               <TabsList className="gap-4">
                 <TabsTrigger value="camera">Camera</TabsTrigger>
-
-                <TabsTrigger value="generate">Gerate Image</TabsTrigger>
+                <TabsTrigger value="generate">Generate Image</TabsTrigger>
                 <TabsTrigger value="train">Train a model</TabsTrigger>
                 {/* <TabsTrigger value="packs">Packs</TabsTrigger> */}
               </TabsList>
             </div>
-            <TabsContent value="generate">
+            <TabsContent value="generate" className="w-full">
               <GenerateImage />
             </TabsContent>
-            <TabsContent value="train">
+            <TabsContent value="train" className="w-full">
               <Train />
             </TabsContent>
-            {/* <TabsContent value="packs">
+            {/* <TabsContent value="packs" className="w-full">
               <Packs />
             </TabsContent>{" "} */}
-            <TabsContent value="camera">
+            <TabsContent value="camera" className="w-full">
               <Camera />
             </TabsContent>
           </Tabs>

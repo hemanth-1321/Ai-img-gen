@@ -4,6 +4,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 export function AppBar() {
   return (
@@ -27,7 +28,7 @@ export function AppBar() {
                 href="/"
                 className="flex items-center space-x-2 transition-opacity hover:opacity-90"
               >
-                <span className="hidden font-bold font-mono text-xl sm:inline-block">
+                <span className=" font-bold font-mono text-xl ">
                   Photo-Gen-AI
                 </span>
               </Link>
@@ -57,14 +58,6 @@ export function AppBar() {
                 />
               </SignedIn>
               <SignedOut>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
-                  asChild
-                >
-                  <Link href="/pricing">Pricing</Link>
-                </Button>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
