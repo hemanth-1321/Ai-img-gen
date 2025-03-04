@@ -34,8 +34,9 @@ export function AppBar() {
               </Link>
             </motion.div>
 
-            {/* Auth & Pricing */}
             <div className="flex items-center gap-4">
+              <ThemeToggle />
+
               <SignedIn>
                 <Button
                   variant="ghost"
