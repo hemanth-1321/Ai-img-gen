@@ -5,20 +5,20 @@ export class FalAiModel {
   constructor() {}
   public async generateImage(prompt: string, tensorPath: string) {
     try {
-      // const { request_id, response_url } = await fal.queue.submit(
-      //   "fal-ai/flux-lora",
-      //   {
-      //     input: {
-      //       prompt,
-      //       loras: [{ path: tensorPath, scale: 1 }],
-      //     },
-      //     webhookUrl: `${process.env.BASE_URL}/fal-ai/webhook/image`,
-      //   }
-      // );
+      const { request_id, response_url } = await fal.queue.submit(
+        "fal-ai/flux-lora",
+        {
+          input: {
+            prompt,
+            loras: [{ path: tensorPath, scale: 1 }],
+          },
+          webhookUrl: `${process.env.BASE_URL}/fal-ai/webhook/image`,
+        }
+      );
       console.log(
         `Generating image, webhook URL: ${process.env.BASE_URL}/fal-ai/webhook/image`
       );
-      return { request_id: "", response_url: "" };
+      return { request_id, response_url };
     } catch (error) {
       console.error("Error generating image:", error);
       throw error;
