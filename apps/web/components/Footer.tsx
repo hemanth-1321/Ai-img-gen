@@ -2,11 +2,11 @@ import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-background border-t border-border py-12 px-4 md:px-6 ">
+    <footer className="bg-background border-t border-border py-12 px-4 md:px-6 mt-6">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="col-span-1 md:col-span-1">
-            <div className="font-bold text-2xl mb-3">ImageAI</div>
+            <div className="font-bold text-2xl mb-3">Photo-Gen-AI</div>
             <p className="text-muted-foreground mb-4">
               Train custom AI models with your images and generate unique
               artwork in your style.

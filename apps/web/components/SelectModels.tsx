@@ -7,15 +7,13 @@ import { Button } from "./ui/button";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { BACKEND_URL } from "@/lib/config";
-
-export interface Tmodel {
-  id: string;
-  thumbnail: string;
-  name: string;
+import { Tmodel } from "./GenerateImage";
+interface SelectModelsProps {
+  packId: string;
 }
 
-export const GenerateImage = () => {
-  const [prompt, setPrompt] = useState("");
+export const SelectModels: React.FC<SelectModelsProps> = ({ packId }) => {
+  console.log("packid", packId);
   const [models, setModels] = useState<Tmodel[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
@@ -49,8 +47,8 @@ export const GenerateImage = () => {
     const token = await getToken();
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/ai/gen/generate`,
-        { prompt, modelId: selectedModel, num: 1 },
+        `${BACKEND_URL}/ai/pack/generate`,
+        { packId, modelId: selectedModel },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {
@@ -65,7 +63,6 @@ export const GenerateImage = () => {
   return (
     <div className="flex flex-col items-center justify-center mt-20 md:mt-4">
       <div className="w-full max-w-3xl mb-6">
-        <h2 className="text-lg font-semibold mb-2">Select Model</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => (
@@ -94,15 +91,12 @@ export const GenerateImage = () => {
 
       {/* Text Input & Button */}
       <div className="w-full max-w-2xl flex flex-col items-center p-4">
-        <Textarea
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Describe the image you want to generate"
-          className="w-full min-h-[100px] p-3"
-        />
         <Button onClick={handleGenerate} className="mt-4">
           Create Image
         </Button>
       </div>
     </div>
   );
+
+  return <div></div>;
 };

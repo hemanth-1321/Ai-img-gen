@@ -2,6 +2,7 @@ import React from "react";
 import { Skeleton } from "./ui/skeleton";
 
 export interface TImage {
+  src(src: any, arg1: string): void;
   id: string;
   imageUrl: string;
   status: string;

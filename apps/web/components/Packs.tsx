@@ -10,7 +10,7 @@ async function getPacks(): Promise<TPack[]> {
 export const Packs = async () => {
   const packs = await getPacks();
   return (
-    <div>
+    <div className="mt-16 md:mt-6">
       {packs.map((pack) => (
         <PackCard key={pack.name} {...pack} />
       ))}

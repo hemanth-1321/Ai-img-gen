@@ -6,7 +6,7 @@ import { authMiddleware } from "../middleware";
 
 const router: Router = Router();
 
-router.post("/pack/generate", authMiddleware, async (req, res) => {
+router.post("/generate", authMiddleware, async (req, res) => {
   const userId = req.userId;
   if (!userId) {
     res.status(404).json({
