@@ -45,7 +45,6 @@ export const Hero = () => {
           </Button>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
