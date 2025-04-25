@@ -21,4 +21,4 @@ jobs:
           context: .
           file: ./docker/Dockerfile.backend
           push: true
-          tags: photogenai/backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
