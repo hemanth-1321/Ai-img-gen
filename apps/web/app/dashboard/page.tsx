@@ -1,9 +1,16 @@
+"use client"
 import React from "react";
+import dynamic from "next/dynamic"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GenerateImage } from "@/components/GenerateImage";
+const GenerateImage = dynamic(() => import("@/components/GenerateImage").then(mod => mod.GenerateImage), {
+  ssr: false,
+});
+
 import { Packs } from "@/components/Packs";
 import { Train } from "@/components/Train";
-import { Camera } from "@/components/Camera";
+const Camera = dynamic(() => import("@/components/Camera").then(mod => mod.Camera), {
+  ssr: false,
+});
 
 const page = () => {
   return (
