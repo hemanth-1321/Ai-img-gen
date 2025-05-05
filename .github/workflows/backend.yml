@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,11 +28,16 @@ jobs:
 
       - name: Deploy to the VM
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
-          chmod 600 ~/ssh_key
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.201.102.194 << 'EOF'
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
+
+          ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@13.201.102.194 << EOF
+            docker pull $IMAGE
             docker stop user_backend || true
             docker rm user_backend || true
-            docker run --name user_backend -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
+            docker run --name user_backend -d -p 8080:8080 $IMAGE
           EOF
+
+          rm -f ssh_key
