@@ -1,0 +1,58 @@
+name: Deployment of frontend
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile.frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend
+
+      - name: Install Docker on the VM (if not already installed)
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@13.201.102.194 << 'EOF'
+            if ! command -v docker &> /dev/null; then
+              echo "Docker not found. Installing..."
+              curl -fsSL https://get.docker.com -o get-docker.sh
+              sudo sh get-docker.sh
+              sudo usermod -aG docker $USER
+              newgrp docker
+            else
+              echo "Docker already installed."
+            fi
+          EOF
+
+      - name: Deploy to the VM
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -i ssh_key ubuntu@13.201.102.194 << EOF
+            docker system prune -af --volumes
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/frontend
+            docker stop user_frontend || true
+            docker rm user_frontend || true
+            docker run --name user_frontend -d -p 3000:3000 \
+              -e NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY='${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}' \
+              -e CLERK_SECRET_KEY='${{ secrets.CLERK_SECRET_KEY }}' \
+              ${{ secrets.DOCKERHUB_USERNAME }}/frontend
+          EOF
