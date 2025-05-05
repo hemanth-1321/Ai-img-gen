@@ -29,8 +29,8 @@ jobs:
       - name: Deploy to the VM
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
-          chmod 600 ~/ssh_key
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key root@172.31.3.169 << 'EOF'
+          chmod 700 ~/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key root@13.201.102.194 << 'EOF'
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
             docker stop user_backend || true
             docker rm user_backend || true
