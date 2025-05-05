@@ -19,11 +19,10 @@ const page = () => {
         <div className="max-w-6xl mx-auto space-y-8">
           <Tabs defaultValue="camera" className="w-full">
             <div className="flex justify-center">
-              <TabsList className="gap-4 grid grid-cols-2 md:grid-cols-4 m-4 min-w-0">
+              <TabsList className="gap-4 grid grid-cols-2 md:grid-cols-3 m-4 min-w-0">
                 <TabsTrigger value="camera">Camera</TabsTrigger>
                 <TabsTrigger value="generate">Generate Image</TabsTrigger>
                 <TabsTrigger value="train">Train a model</TabsTrigger>
-                <TabsTrigger value="packs">Packs</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="generate" className="w-full">
@@ -32,9 +31,7 @@ const page = () => {
             <TabsContent value="train" className="w-full">
               <Train />
             </TabsContent>
-            <TabsContent value="packs" className="w-full">
-              <Packs />
-            </TabsContent>
+            
             <TabsContent value="camera" className="w-full">
               <Camera />
             </TabsContent>

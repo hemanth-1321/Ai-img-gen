@@ -24,10 +24,10 @@ router.post("/training", authMiddleware, async (req, res) => {
     }
 
     const { request_id, response_url } = await falAiModel.TrainModel(
-      parsedBody.data.zipUrl,
-      parsedBody.data.name
+        parsedBody.data.zipUrl,
+        parsedBody.data.name
     );
-
+    console.log(request_id, response_url);
     const data = await client.model.create({
       data: {
         name: parsedBody.data.name,

@@ -1,5 +1,5 @@
 import { fal } from "@fal-ai/client";
-import { BaseModel } from "./BaseModel";
+// import { BaseModel } from "./BaseModel";
 
 export class FalAiModel {
   constructor() {}

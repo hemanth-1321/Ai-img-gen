@@ -1,8 +1,9 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { Footer } from "./Footer";
-
+import { useRouter } from "next/navigation";
 export const Hero = () => {
+   const router=useRouter()
   return (
     <div className="relative overflow-hidden ">
       <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/20 rounded-full filter blur-3xl opacity-50 animate-float" />
@@ -39,7 +40,9 @@ export const Hero = () => {
           className="flex flex-col sm:flex-row gap-4 items-center justify-center animate-fade-in"
           style={{ animationDelay: "0.4s" }}
         >
-          <Button className="px-8 py-6 text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:translate-y-[-2px]">
+          <Button onClick={()=>{
+            router.push("/dashboard")
+          }} className="cursor-pointer px-8 py-6 text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:translate-y-[-2px]">
             Get Started
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
